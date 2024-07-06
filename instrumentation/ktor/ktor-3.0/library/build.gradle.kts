@@ -8,7 +8,9 @@ plugins {
 }
 
 val ktorVersion = "3.0.0-beta-1"
-version = "$version-snoty.2"
+// we only publish this library, the rest should keep the original version
+// and be fetched from upstream repositories
+project.version = "$version-snoty.1"
 
 dependencies {
   library("io.ktor:ktor-client-core:$ktorVersion")
