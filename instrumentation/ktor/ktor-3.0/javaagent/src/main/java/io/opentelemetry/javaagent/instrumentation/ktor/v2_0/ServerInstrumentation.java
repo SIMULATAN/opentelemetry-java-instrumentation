@@ -12,7 +12,7 @@ import io.ktor.server.application.Application;
 import io.ktor.server.application.ApplicationPluginKt;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.instrumentation.ktor.v2_0.server.KtorServerTracing;
+import io.opentelemetry.instrumentation.ktor.v3_0.server.KtorServerTracing;
 import io.opentelemetry.javaagent.bootstrap.internal.CommonConfig;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
