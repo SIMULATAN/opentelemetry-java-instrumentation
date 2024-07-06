@@ -13,6 +13,7 @@ import io.opentelemetry.instrumentation.api.incubator.semconv.http.HttpExperimen
 import io.opentelemetry.instrumentation.api.instrumenter.AttributesExtractor
 import io.opentelemetry.instrumentation.api.instrumenter.Instrumenter
 import io.opentelemetry.instrumentation.api.instrumenter.SpanKindExtractor.alwaysClient
+import io.opentelemetry.instrumentation.api.instrumenter.SpanNameExtractor
 import io.opentelemetry.instrumentation.api.semconv.http.HttpClientAttributesExtractor
 import io.opentelemetry.instrumentation.api.semconv.http.HttpClientMetrics
 import io.opentelemetry.instrumentation.api.semconv.http.HttpSpanNameExtractor
@@ -22,6 +23,7 @@ import io.opentelemetry.instrumentation.ktor.v3_0.InstrumentationProperties.INST
 class KtorClientTracingBuilder {
 
   private var openTelemetry: OpenTelemetry? = null
+  private var spanNameExtractor: SpanNameExtractor<in HttpRequestData>? = null
   private val additionalExtractors = mutableListOf<AttributesExtractor<in HttpRequestData, in HttpResponse>>()
   private val httpAttributesExtractorBuilder = HttpClientAttributesExtractor.builder(KtorHttpClientAttributesGetter)
   private val httpSpanNameExtractorBuilder = HttpSpanNameExtractor.builder(KtorHttpClientAttributesGetter)
@@ -29,6 +31,10 @@ class KtorClientTracingBuilder {
 
   fun setOpenTelemetry(openTelemetry: OpenTelemetry) {
     this.openTelemetry = openTelemetry
+  }
+
+  fun setSpanNameExtractor(spanNameExtractor: SpanNameExtractor<in HttpRequestData>) {
+    this.spanNameExtractor = spanNameExtractor
   }
 
   fun setCapturedRequestHeaders(vararg headers: String) = setCapturedRequestHeaders(headers.asList())
@@ -66,11 +72,12 @@ class KtorClientTracingBuilder {
   internal fun build(): KtorClientTracing {
     val initializedOpenTelemetry = openTelemetry
       ?: throw IllegalArgumentException("OpenTelemetry must be set")
+    val spanNameExtractor: SpanNameExtractor<in HttpRequestData> = spanNameExtractor ?: httpSpanNameExtractorBuilder.build()
 
     val instrumenterBuilder = Instrumenter.builder<HttpRequestData, HttpResponse>(
       initializedOpenTelemetry,
       INSTRUMENTATION_NAME,
-      httpSpanNameExtractorBuilder.build()
+      spanNameExtractor
     )
       .setSpanStatusExtractor(HttpSpanStatusExtractor.create(KtorHttpClientAttributesGetter))
       .addAttributesExtractor(httpAttributesExtractorBuilder.build())

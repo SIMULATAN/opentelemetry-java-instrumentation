@@ -4,9 +4,11 @@ plugins {
   id("otel.library-instrumentation")
 
   id("org.jetbrains.kotlin.jvm")
+  `maven-publish`
 }
 
 val ktorVersion = "3.0.0-beta-1"
+version = "$version-snoty.2"
 
 dependencies {
   library("io.ktor:ktor-client-core:$ktorVersion")
@@ -34,6 +36,21 @@ tasks {
   compileKotlin {
     kotlinOptions {
       languageVersion = "1.6"
+    }
+  }
+}
+
+publishing {
+  repositories {
+    maven {
+      name = "simulatanRepositorySnapshots"
+      url = uri("https://maven.simulatan.me/snapshots")
+      credentials(PasswordCredentials::class)
+    }
+    maven {
+      name = "simulatanRepositoryReleases"
+      url = uri("https://maven.simulatan.me/releases")
+      credentials(PasswordCredentials::class)
     }
   }
 }
