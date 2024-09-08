@@ -176,7 +176,7 @@ class KtorServerTracing private constructor(
         }
       }
 
-      pipeline.monitor.subscribe(Routing.RoutingCallStarted) { call ->
+      pipeline.monitor.subscribe(RoutingRoot.RoutingCallStarted) { call ->
         HttpServerRoute.update(Context.current(), HttpServerRouteSource.SERVER, { _, arg -> arg.route.parent.toString() }, call)
       }
 
