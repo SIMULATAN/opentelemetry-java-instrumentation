@@ -6,7 +6,7 @@ plugins {
   id("org.jetbrains.kotlin.jvm")
 }
 
-val ktorVersion = "3.0.0-beta-1"
+val ktorVersion = "3.0.0"
 
 dependencies {
   api(project(":testing-common"))

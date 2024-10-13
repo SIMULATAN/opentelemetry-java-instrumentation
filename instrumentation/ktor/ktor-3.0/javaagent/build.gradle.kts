@@ -13,7 +13,7 @@ muzzle {
   }
 }
 
-val ktorVersion = "3.0.0-beta-1"
+val ktorVersion = "3.0.0"
 
 dependencies {
   library("io.ktor:ktor-client-core:$ktorVersion")

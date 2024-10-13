@@ -7,10 +7,10 @@ plugins {
   `maven-publish`
 }
 
-val ktorVersion = "3.0.0-beta-2"
+val ktorVersion = "3.0.0"
 // we only publish this library, the rest should keep the original version
 // and be fetched from upstream repositories
-project.version = "$version-snoty.2"
+project.version = "$version-snoty.3"
 
 dependencies {
   library("io.ktor:ktor-client-core:$ktorVersion")
